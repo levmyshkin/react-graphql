@@ -45,114 +45,58 @@ query {
 }
 `
 
-// const articles = [
-//   {
-//     id: 1,
-//     title: 'First article',
-//     body: {
-//       value: 'This is the first article'
-//     }
-//   },
-//   {
-//     id: 2,
-//     title: 'Second article',
-//     body: {
-//       value: 'This is the second article'
-//     }
-//   }
-// ]
+const GET_NODES_USING_NODE_QUERY = gql`
+query{
+  nodeQuery(limit: 10, offset: 0, filter: {conditions: [{operator: EQUAL, field: "type", value: ["article"]}]}) {
+    entities {
+      entityId
+      entityCreated
+      entityLabel
+      
+      ... on NodeArticle {
+        title
+        body {
+          value
+        }
+        fieldImage {
+          targetId
+          alt
+          title
+          width
+          height
+          url
+        }
+      }
+    }
+  } 
+}
+`
 
-
-// function App() {
-//   return (
-//     <ApolloProvider client={client}>
-//       <AppComponent />
-//       <div className="App">
-//         <header className="App-header">
-//           <img src={logo} className="App-logo" alt="logo" />
-//           <p>
-//             Edit <code>src/App.js</code> and save to reload.
-//           </p>
-//           <a
-//             className="App-link"
-//             href="https://reactjs.org"
-//             target="_blank"
-//             rel="noopener noreferrer"
-//           >
-//             Learn React
-//           </a>
-//         </header>
-//       </div>
-//     </ApolloProvider>
-//   );
-// }
 
 function App() {
-  // client.query({
-  //   query: gql`
-  //           query {
-  //             nodeById(id: "1") {
-  //               entityId
-  //               entityCreated
-  //
-  //               title
-  //               status
-  //
-  //               ... on NodeArticle {
-  //                 fieldImage {
-  //                   targetId
-  //                   alt
-  //                   title
-  //                   width
-  //                   height
-  //                   url
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         `,
-  // })
-  //   .then(articles => console.log(articles))
-  //   .catch(error => console.error(error));
-
-  // return (
-  //   <ApolloProvider client={client}>
-  //     <div className="App">
-  //
-  //
-  //       <Query client={client} query={GET_NODE}>
-  //         {({ data: { articles }, loading }) => {
-  //           console.log(articles)
-  //           if (loading || !articles) {
-  //             return <div>Loading ...</div>;
-  //           }
-  //           var articlesList = [];
-  //           articlesList.append(articles.data.nodeById);
-  //
-  //           //console.log(articlesList)
-  //           return (
-  //             <ArticlesView articles={articlesList} />
-  //           );
-  //         }}
-  //       </Query>
-  //     </div>
-  //   </ApolloProvider>
-  // );
-
   return (
-    <Query client={client} query={GET_NODE_BY_ID}>
-      {({ loading, error, data }) => {
-        console.log(data);
-        if (error) return <div>Error ...</div>
-        if (loading || !data) return <div>Loading ...</div>;
-        var articlesList = [];
-        articlesList[0] = (data.nodeById);
-        console.log(articlesList);
-        return (
-          <ArticlesView articles={articlesList} />
-        );
-      }}
-    </Query>
+    <ApolloProvider client={client}>
+      <Query query={GET_NODES_USING_NODE_QUERY}>
+        {({ loading, error, data }) => {
+          if (error) return <div>Error ...</div>
+          if (loading || !data) return <div>Loading ...</div>;
+
+          var articlesList = [];
+
+          if (data.nodeById) {
+            articlesList[0] = (data.nodeById);
+          }
+
+          if (data.nodeQuery) {
+            articlesList = (data.nodeQuery.entities);
+          }
+
+          return (
+            <ArticlesView articles={articlesList} />
+          );
+        }}
+      </Query>
+    </ApolloProvider>
   );
 }
 
