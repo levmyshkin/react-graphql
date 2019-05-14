@@ -1,10 +1,7 @@
 import React from 'react';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import ArticlesView from "./ArticlesView";
-import {BrowserRouter as Router} from "react-router-dom";
 
 
 const GET_NODES_USING_NODE_QUERY = gql`

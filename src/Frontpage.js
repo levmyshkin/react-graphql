@@ -1,6 +1,4 @@
 import React from 'react';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import ArticlesView from "./ArticlesView";
