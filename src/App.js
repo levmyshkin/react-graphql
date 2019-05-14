@@ -7,7 +7,21 @@ import ArticleFull from './ArticleFull';
 import Frontpage from './Frontpage';
 import Header from "./Header";
 import Footer from "./Footer";
+import CreateArticle from "./CreateArticle";
+import ApolloClient from 'apollo-boost';
+import {ApolloProvider} from "react-apollo";
 
+
+const client = new ApolloClient({
+  uri: 'http://drupal-8.7.local/graphql',
+  // request: operation => {
+  //   operation.setContext({
+  //     headers: {
+  //       authorization: `Bearer ACCESS_TOKEN`,
+  //     },
+  //   });
+  // },
+});
 
 function Index() {
   return <Frontpage />
@@ -25,13 +39,14 @@ function ArticlesViews() {
   return <ArticlesGraphqlView />
 }
 
-function ContactUs() {
-  return <h2>Contact Us</h2>
+function ArticleAdd() {
+  return <CreateArticle />
 }
 
 function App() {
   return (
-    <Router>
+    <ApolloProvider client={client}>
+      <Router>
         <Header />
 
         <div>
@@ -39,11 +54,12 @@ function App() {
           <Route path="/about-graphql" component={AboutGraphQL} />
           <Route path="/articles" component={ArticlesList} />
           <Route path="/articles-views" component={ArticlesViews} />
-          <Route path="/contact-us" component={ContactUs} />
+          <Route path="/create-article" component={ArticleAdd} />
         </div>
 
         <Footer />
-    </Router>
+      </Router>
+    </ApolloProvider>
   );
 }
 
