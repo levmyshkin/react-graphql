@@ -4,43 +4,48 @@ import { ApolloProvider } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import ArticlesView from "./ArticlesView";
-import {BrowserRouter as Router} from "react-router-dom";
 
 const client = new ApolloClient({
   uri: 'http://drupal-8.7.local/graphql',
+  // request: operation => {
+  //   operation.setContext({
+  //     headers: {
+  //       authorization: `Bearer YOUR_GITHUB_PERSONAL_ACCESS_TOKEN`,
+  //     },
+  //   });
+  // },
 });
 
-const GET_NODES_USING_NODE_QUERY = gql`
-query{
-  nodeQuery(limit: 10, offset: 0, filter: {conditions: [{operator: EQUAL, field: "type", value: ["article"]}]}) {
-    entities {
-      entityId
-      entityCreated
-      entityLabel
-      
-      ... on NodeArticle {
+const GET_NODE_BY_ID = gql`
+query {
+  nodeById(id: "4") {
+    entityId
+    entityCreated
+  
+    title
+    status
+  
+    ... on NodeArticle {
+      body {
+        value
+      }
+      fieldImage {
+        targetId
+        alt
         title
-        body {
-          value
-        }
-        fieldImage {
-          targetId
-          alt
-          title
-          width
-          height
-          url
-        }
+        width
+        height
+        url
       }
     }
-  } 
+  }
 }
 `
 
-function Articles() {
+function Frontpage() {
   return (
     <ApolloProvider client={client}>
-      <Query query={GET_NODES_USING_NODE_QUERY}>
+      <Query query={GET_NODE_BY_ID}>
         {({ loading, error, data }) => {
           if (error) return <div>Error ...</div>
           if (loading || !data) return <div>Loading ...</div>;
@@ -49,10 +54,6 @@ function Articles() {
 
           if (data.nodeById) {
             articlesList[0] = (data.nodeById);
-          }
-
-          if (data.nodeQuery) {
-            articlesList = (data.nodeQuery.entities);
           }
 
           return (
@@ -64,4 +65,4 @@ function Articles() {
   )
 }
 
-export default Articles;
+export default Frontpage;

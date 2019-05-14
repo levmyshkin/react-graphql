@@ -1,0 +1,68 @@
+import React, { Component } from 'react';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import ArticlesView from "./ArticlesView";
+
+function ArticleFull({ nid }) {
+
+  const client = new ApolloClient({
+    uri: 'http://drupal-8.7.local/graphql',
+  });
+
+  const GET_NODE_BY_ID = gql`
+    query nodeById($nid: String!){
+      nodeById(id: $nid) {
+        entityId
+        entityCreated
+      
+        title
+        status
+      
+        ... on NodeArticle {
+          body {
+            value
+          }
+          fieldImage {
+            targetId
+            alt
+            title
+            width
+            height
+            url
+          }
+        }
+        ... on NodePage {
+          body {
+            value
+          }
+        }
+      }
+    }
+    `
+
+  return (
+    <ApolloProvider client={client}>
+      <Query query={GET_NODE_BY_ID} variables={{ nid }}>
+        {({loading, error, data}) => {
+          if (error) return <div>Error ...</div>
+          if (loading || !data) return <div>Loading ...</div>;
+
+          var articlesList = [];
+
+          if (data.nodeById) {
+            articlesList[0] = (data.nodeById);
+          }
+
+          return (
+            <ArticlesView articles={articlesList}/>
+          );
+        }}
+      </Query>
+    </ApolloProvider>
+  )
+
+}
+
+export default ArticleFull;
