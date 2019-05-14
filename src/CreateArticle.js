@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import {ApolloProvider, Mutation} from 'react-apollo'
+import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
-import ApolloClient from "apollo-client";
+
 
 const CREATE_ARTICLE = gql`
   mutation($input: ArticleInput!) {
@@ -19,42 +19,58 @@ const CREATE_ARTICLE = gql`
 
 
 
-class CreateArticle extends Component {
-  state = {
-    title: '',
-    body: '',
-  }
+const CreateArticle = (props) => (
+  <Mutation
+    mutation={gql`
+      mutation($input: ArticleInput!) {
+        createArticle(input: $input) {
+          entity {
+            entityId
+          }
+          errors
+          violations {
+            message
+          }
+        }
+      }
+    `}
+  >
+    {(createArticle, { loading, error, data }) => {
+      if (data) {
+        // @todo add notification.
+      }
+      if (loading) return <p>Loading...</p>;
+      if (error) {
 
+        return <p>Error :(</p>;
+      }
+      let title, body
 
-  render() {
-    const { title, body } = this.state
-    return (
-      <div>
-
-        <div className="flex flex-column mt3">
+      return (
+        <form  onSubmit={e => {
+          e.preventDefault();
+          createArticle({ variables: {
+              "input": {
+                title: title.value,
+                body: body.value,
+              }
+            }});
+        }}>
           <input
-            className="mb2"
             value={title}
-            onChange={e => this.setState({ title: e.target.value })}
-            type="text"
+            type='text'
+            ref={ node =>  title = node }
             placeholder="Title"
           />
           <textarea
-            className="mb2"
-            value={body}
-            onChange={e => this.setState({ body: e.target.value })}
+            ref={ node =>  body = node }
             placeholder="Body"
           />
-        </div>
-        {/*<button onClick={`... you'll implement this 🔜`}>Submit</button>*/}
-        <Mutation mutation={CREATE_ARTICLE} variables={{ input: {title: title, body: body} }}>
-          {createArticle => <button onClick={createArticle}>Submit</button>}
-        </Mutation>
-
-      </div>
-    )
-  }
-
-}
+          <button type="submit" >Save</button>
+        </form>
+      )
+    }}
+  </Mutation>
+);
 
 export default CreateArticle;
