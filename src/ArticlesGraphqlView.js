@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import ArticlesView from "./ArticlesView";
@@ -12,7 +12,7 @@ function ArticleFull({ nid }) {
           entityLabel
           title
   
-          ...on NodeArticle {
+          ...on NodeArticle { 
             body {
               value
             }

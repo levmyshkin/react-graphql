@@ -20,21 +20,7 @@ const CREATE_ARTICLE = gql`
 
 
 const CreateArticle = (props) => (
-  <Mutation
-    mutation={gql`
-      mutation($input: ArticleInput!) {
-        createArticle(input: $input) {
-          entity {
-            entityId
-          }
-          errors
-          violations {
-            message
-          }
-        }
-      }
-    `}
-  >
+  <Mutation mutation={CREATE_ARTICLE} >
     {(createArticle, { loading, error, data }) => {
       if (data) {
         // @todo add notification.
