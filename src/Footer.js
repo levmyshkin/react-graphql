@@ -17,16 +17,20 @@ query{
 
 function Footer() {
   return (
-    <Query query={GET_CUSTOM_BLOCK_BY_ID}>
-      {({ loading, error, data }) => {
-        if (error) return <div>Error ...</div>
-        if (loading || !data) return <div>Loading ...</div>;
+    <div class="footer">
+      <div class="container">
+        <Query query={GET_CUSTOM_BLOCK_BY_ID}>
+          {({ loading, error, data }) => {
+            if (error) return <div>Error ...</div>
+            if (loading || !data) return <div>Loading ...</div>;
 
-        return (
-          <div>{data.blockContentById.info}</div>
-        );
-      }}
-    </Query>
+            return (
+              <div>{data.blockContentById.info}</div>
+            );
+          }}
+        </Query>
+      </div>
+    </div>
   )
 }
 

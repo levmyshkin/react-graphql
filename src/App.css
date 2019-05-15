@@ -1,3 +1,22 @@
+body {
+  background: #eee;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+.page-wrapper {
+  min-height: 100%;
+  /* Equal to height of footer */
+  /* But also accounting for potential margin-bottom of last child */
+  margin-bottom: -100px;
+}
+.footer,
+.push {
+  height: 100px;
+}
+
 .App {
   text-align: center;
 }
@@ -23,6 +42,11 @@
   color: #61dafb;
 }
 
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -31,3 +55,78 @@
     transform: rotate(360deg);
   }
 }
+
+.header {
+  padding-top: 10px;
+}
+
+.logo-wrapper {
+  float: left;
+}
+
+.logo-minsk-wrapper {
+  float: right;
+}
+
+.logo {
+  width: 250px;
+  height: auto;
+}
+
+.logo-minsk {
+  width: auto;
+  height: 63px;
+}
+
+.top-menu {
+  clear: both;
+  padding-top: 5px;
+}
+
+.top-menu ul {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.top-menu li {
+  display: inline-block;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-left: 1px solid #0677BE;
+}
+
+.top-menu li:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+.footer {
+  background: #222;
+  color: #fff;
+}
+
+.footer .container {
+  padding-top: 10px;
+}
+
+a, a:visited {
+  color: #0677BE;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.content {
+  margin-bottom: 40px;
+}
+
+.title-wrapper {
+  margin-bottom: 20px;
+}
+
+.body-wrapper {
+  margin-bottom: 20px;
+}
+

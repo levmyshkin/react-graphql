@@ -22,9 +22,7 @@ const CREATE_ARTICLE = gql`
 const CreateArticle = (props) => (
   <Mutation mutation={CREATE_ARTICLE} >
     {(createArticle, { loading, error, data }) => {
-      if (data) {
-        // @todo add notification.
-      }
+
       if (loading) return <p>Loading...</p>;
       if (error) {
 
@@ -33,27 +31,43 @@ const CreateArticle = (props) => (
       let title, body
 
       return (
-        <form  onSubmit={e => {
-          e.preventDefault();
-          createArticle({ variables: {
-              "input": {
-                title: title.value,
-                body: body.value,
-              }
-            }});
-        }}>
-          <input
-            value={title}
-            type='text'
-            ref={ node =>  title = node }
-            placeholder="Title"
-          />
-          <textarea
-            ref={ node =>  body = node }
-            placeholder="Body"
-          />
-          <button type="submit" >Save</button>
-        </form>
+
+        <div class="form-create-article-wrapper">
+          <h3>Create Article</h3>
+          <p>GraphQL Mutution example</p>
+          {
+            data
+              ? <div>Article has been added!</div>
+              : <div></div>
+          }
+          <form  onSubmit={e => {
+            e.preventDefault();
+            createArticle({ variables: {
+                "input": {
+                  title: title.value,
+                  body: body.value,
+                }
+              }});
+          }}>
+            <div className={'title-wrapper'}>
+              <input
+                value={title}
+                type='text'
+                ref={ node =>  title = node }
+                placeholder="Title"
+              />
+            </div>
+            <div className={'body-wrapper'}>
+              <textarea
+                ref={ node =>  body = node }
+                placeholder="Body"
+              />
+            </div>
+            <div className={'form-actions'}>
+              <button type="submit" >Save</button>
+            </div>
+          </form>
+        </div>
       )
     }}
   </Mutation>

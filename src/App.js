@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import './normalize.css';
 import './App.css';
 import Articles from './Articles';
 import ArticlesGraphqlView from './ArticlesGraphqlView';
@@ -47,16 +48,20 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Header />
+        <div class="page-wrapper">
+          <div class="container">
+            <Header />
 
-        <div>
-          <Route path="/" exact component={Index} />
-          <Route path="/about-graphql" component={AboutGraphQL} />
-          <Route path="/articles" component={ArticlesList} />
-          <Route path="/articles-views" component={ArticlesViews} />
-          <Route path="/create-article" component={ArticleAdd} />
+            <div className={'content'}>
+              <Route path="/" exact component={Index} />
+              <Route path="/about-graphql" component={AboutGraphQL} />
+              <Route path="/articles" component={ArticlesList} />
+              <Route path="/articles-views" component={ArticlesViews} />
+              <Route path="/create-article" component={ArticleAdd} />
+            </div>
+          </div>
+          <div className="push"></div>
         </div>
-
         <Footer />
       </Router>
     </ApolloProvider>

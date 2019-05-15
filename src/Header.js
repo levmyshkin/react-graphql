@@ -24,17 +24,27 @@ query{
 
 function Header() {
   return (
-    <Query query={GET_MENU_BY_NAME}>
-      {({ loading, error, data }) => {
-        if (error) return <div>Error ...</div>
-        if (loading || !data) return <div>Loading ...</div>;
+    <div class="header">
+      <div class="logo-wrapper">
+        <img src="/images/logo.png" class="logo" />
+      </div>
+      <div class="logo-minsk-wrapper">
+        <img src="/images/logo-minsk.png" class="logo-minsk"/>
+      </div>
+      <div class="top-menu">
+        <Query query={GET_MENU_BY_NAME}>
+          {({ loading, error, data }) => {
+            if (error) return <div>Error ...</div>
+            if (loading || !data) return <div>Loading ...</div>;
 
-        var menuLinks = data.menuByName.links
-        return (
-          <div><MenuView menuLinks={menuLinks} /></div>
-        );
-      }}
-    </Query>
+            var menuLinks = data.menuByName.links
+            return (
+              <div><MenuView menuLinks={menuLinks} /></div>
+            );
+          }}
+        </Query>
+      </div>
+    </div>
   )
 }
 
